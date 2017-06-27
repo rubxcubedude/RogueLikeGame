@@ -10,7 +10,7 @@ class Entity{
 		float getX (void) const;
 		float getY (void) const;
 		char getChar (void) const;
-	private:
+	protected:
 		float position_x;
 		float position_y;
 		char  display_char;

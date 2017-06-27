@@ -3,54 +3,16 @@
 #include <gl/freeglut.h>
 using std::string;
 
-#include "Entity.hpp"
 #include "Game.hpp"
 
-std::vector<Entity*> vEntities;
-Entity player(0.0f, 0.0f, '@', "BLACK");
-Entity npc(0.5f, 0.5f, 'N', "BLACK");
 Game g;
 
 void processKeyboardKeys(unsigned char key, int x, int y) {
-	switch(toupper(key))
-	{
-		case 'A':
-			player.move(-0.01, 0);
-		  break;
-		case 'D':
-			player.move(0.01, 0);
-		  break;
-		case 'S':
-			player.move(0, -0.01);
-		  break;
-		case 'W':
-			player.move(0, 0.01);
-		  break;			
-	}
-	glutPostRedisplay();
-	if (key == 27)
-		exit(0);
+	g.processKeyboardKeys(key, x, y);
 }
 
 void processDirectionKeys(int key, int x, int y) {
-	switch(key)
-	{
-		case GLUT_KEY_LEFT:
-			player.move(-0.01, 0);
-		  break;
-	  case GLUT_KEY_RIGHT:
-			player.move(0.01, 0);
-		  break;
-		case GLUT_KEY_DOWN:
-			player.move(0, -0.01);
-		  break;
-		case GLUT_KEY_UP:
-			player.move(0, 0.01);
-		  break;			
-	}
-	glutPostRedisplay();
-	if (key == 27)
-		exit(0);
+	g.processDirectionKeys(key,x,y);
 }
 
 void renderScene()
@@ -61,10 +23,8 @@ void renderScene()
 int main (int argc, char** argv)
 {
 	int screen_width = 800;
-  int screen_height = 500;
-	vEntities.push_back(&player);
-	vEntities.push_back(&npc);
-	g.initialize(vEntities);
+	int screen_height = 500;
+	g.addNpc(0.5,0.5,'N', "BLACK");
 	glutInit(&argc, argv); // Start glut library, pass any extra command line commands to glut.
 	glutInitWindowPosition(0,0);
 	glutInitWindowSize(screen_width, screen_height);
