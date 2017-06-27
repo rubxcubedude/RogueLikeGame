@@ -2,22 +2,14 @@
 #include <vector>
 #include <gl/freeglut.h>
 using std::string;
+
 #include "Entity.hpp"
+#include "Game.hpp"
 
 std::vector<Entity*> vEntities;
 Entity player(0.0f, 0.0f, '@', "BLACK");
 Entity npc(0.5f, 0.5f, 'N', "BLACK");
-
-void drawAllEntities(std::vector<Entity*> v)
-{
-	for(std::vector<Entity*>::iterator it= v.begin(); it != v.end(); ++it)
-	{
-		//set position to draw
-		glRasterPos2d((*it)->getX(),(*it)->getY());
-		//what we drawing has to be character
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*it)->getChar());
-	}
-}
+Game g;
 
 void processKeyboardKeys(unsigned char key, int x, int y) {
 	switch(toupper(key))
@@ -61,12 +53,9 @@ void processDirectionKeys(int key, int x, int y) {
 		exit(0);
 }
 
-void renderScene(void) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	drawAllEntities(vEntities);
-
-  glutSwapBuffers();
+void renderScene()
+{
+	g.update();
 }
 
 int main (int argc, char** argv)
@@ -75,6 +64,7 @@ int main (int argc, char** argv)
   int screen_height = 500;
 	vEntities.push_back(&player);
 	vEntities.push_back(&npc);
+	g.initialize(vEntities);
 	glutInit(&argc, argv); // Start glut library, pass any extra command line commands to glut.
 	glutInitWindowPosition(0,0);
 	glutInitWindowSize(screen_width, screen_height);
