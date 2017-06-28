@@ -4,7 +4,7 @@
 class Player: public Entity
 {
   public:
-    Player(float x, float y, char c, std::string color);
+    Player(float x, float y, char c, const float color[4]);
     ~Player();
 };
 #endif

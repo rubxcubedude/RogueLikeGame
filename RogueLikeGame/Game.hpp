@@ -15,7 +15,7 @@ class Game
 
     void update ();
 
-    void addNpc(float x, float y, char c, std::string color);
+    void addNpc(float x, float y, char c, const float color[4]);
 
     void processDirectionKeys(int key, int x, int y);
     void processKeyboardKeys(unsigned char key, int x, int y);

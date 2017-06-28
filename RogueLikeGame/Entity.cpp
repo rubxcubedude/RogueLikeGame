@@ -1,11 +1,11 @@
 #include "Entity.hpp"
 
-Entity::Entity(float x, float y, char c, std::string color)
+Entity::Entity(float x, float y, char c, const float color[4])
 {
   position_x = x;
   position_y = y;
   display_char = c;
-  display_color = color;
+	memcpy(display_color, color, sizeof(display_color));
 }
 
 Entity::~Entity()

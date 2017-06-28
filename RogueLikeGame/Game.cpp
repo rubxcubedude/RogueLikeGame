@@ -1,7 +1,8 @@
 #include "Game.hpp"
+#include "ColorConstants.hpp"
 Game::Game(void)
 {
-  p1= new Player(0.0f, 0.0f, '@', "BLACK");
+  p1= new Player(0.0f, 0.0f, '@', WHITEF);
   vEntities.push_back(p1);
 }
 
@@ -35,13 +36,14 @@ void Game::drawAllEntities(std::vector<Entity*> v)
   for(std::vector<Entity*>::iterator it= v.begin(); it != v.end(); ++it)
   {
     //set position to draw
+		glColor4fv((*it)->getColor());
     glRasterPos2d((*it)->getX(),(*it)->getY());
     //what we drawing has to be character
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*it)->getChar());
   }
 }
 
-void Game::addNpc(float x, float y, char c, std::string color)
+void Game::addNpc(float x, float y, char c, const float color[4])
 {
   Entity* n = new Entity(x,y,c,color);
   vEntities.push_back(n);
