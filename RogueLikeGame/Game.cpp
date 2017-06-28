@@ -49,12 +49,24 @@ void Game::drawMap(void)
     else
       glColor4fv(NOT_BLOCKED_TILE);
     //what we drawing has to be character
-    glBegin(GL_LINE_LOOP);
-      glVertex3f(it->getPosX()-7.5, it->getPosY()+7.5, 0.0);
-      glVertex3f(it->getPosX()+7.5, it->getPosY()+7.5, 0.0);
-      glVertex3f(it->getPosX()+7.5, it->getPosY()-7.5, 0.0);
-      glVertex3f(it->getPosX()-7.5, it->getPosY()-7.5, 0.0);
-    glEnd();
+    if(it->isBlocked())
+    {
+      glBegin(GL_POLYGON);
+        glVertex3f(it->getPosX()-7.5, it->getPosY()+7.5, 0.0);
+        glVertex3f(it->getPosX()+7.5, it->getPosY()+7.5, 0.0);
+        glVertex3f(it->getPosX()+7.5, it->getPosY()-7.5, 0.0);
+        glVertex3f(it->getPosX()-7.5, it->getPosY()-7.5, 0.0);
+      glEnd();
+    }
+    else
+    {
+      glBegin(GL_LINE_LOOP);
+        glVertex3f(it->getPosX()-7.5, it->getPosY()+7.5, 0.0);
+        glVertex3f(it->getPosX()+7.5, it->getPosY()+7.5, 0.0);
+        glVertex3f(it->getPosX()+7.5, it->getPosY()-7.5, 0.0);
+        glVertex3f(it->getPosX()-7.5, it->getPosY()-7.5, 0.0);
+      glEnd();
+    }
   }
 }
 
