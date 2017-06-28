@@ -4,6 +4,7 @@
 using std::string;
 
 #include "Game.hpp"
+#include "ColorConstants.hpp"
 
 Game g;
 
@@ -24,11 +25,19 @@ int main (int argc, char** argv)
 {
   int screen_width = 800;
   int screen_height = 500;
-  g.addNpc(0.5,0.5,'N', "BLACK");
+  g.addNpc(25,25,'N', YELLOWF);
   glutInit(&argc, argv); // Start glut library, pass any extra command line commands to glut.
   glutInitWindowPosition(0,0);
   glutInitWindowSize(screen_width, screen_height);
   glutCreateWindow ("OpenGL window");
+  // set up the OpenGL projection matrix
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(0.0, (double)screen_width-1.0, 0.0, (double)screen_height-1.0, 0.0, 1.0);
+  glViewport(0, 0, screen_width/100.0, screen_height/100.0);
+  glShadeModel(GL_FLAT);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
   // register callbacks
   glutDisplayFunc(renderScene);
   

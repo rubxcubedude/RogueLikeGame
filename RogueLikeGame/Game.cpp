@@ -39,33 +39,31 @@ void Game::draw(void)
 void Game::drawMap(void)
 { 
   //store our tiles real quick
-  std::vector<Tile> tempTiles = m_pGameMap.getTiles();
-  for(std::vector<Tile>::iterator it = tempTiles.begin(); it != tempTiles.end(); ++ it)
+  std::map<int,std::vector<Tile>> tempTiles = m_pGameMap.getTiles();
+  for(std::map<int,std::vector<Tile>>::iterator it = tempTiles.begin(); it != tempTiles.end(); ++ it)
   {
-    if(it->isBlocked())
-      glColor4fv(BLOCKED_TILE);
-    else if (it->isBlockingSight())
-      glColor4fv(NOT_BLOCKED_TILE);
-    else
-      glColor4fv(NOT_BLOCKED_TILE);
-    //what we drawing has to be character
-    if(it->isBlocked())
+    for(std::vector<Tile>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
     {
-      glBegin(GL_POLYGON);
-        glVertex3f(it->getPosX()-7.5, it->getPosY()+7.5, 0.0);
-        glVertex3f(it->getPosX()+7.5, it->getPosY()+7.5, 0.0);
-        glVertex3f(it->getPosX()+7.5, it->getPosY()-7.5, 0.0);
-        glVertex3f(it->getPosX()-7.5, it->getPosY()-7.5, 0.0);
+      if(it2->isBlocked())
+        glColor4fv(BLOCKED_TILE);
+      else if (it2->isBlockingSight())
+        glColor4fv(NOT_BLOCKED_TILE);
+      else
+        glColor4fv(NOT_BLOCKED_TILE);
+      //what we drawing has to be character
+      if(it2->isBlocked())
+      {
+        glRectf(it2->getPosX()-7.5, it2->getPosY()-7.5, it2->getPosX()+7.5, it2->getPosY()+7.5);        
+      }
+      else
+      {
+       glBegin(GL_LINE_LOOP);
+        glVertex3f(it2->getPosX()-7.5, it2->getPosY()+7.5, 0.0);
+        glVertex3f(it2->getPosX()+7.5, it2->getPosY()+7.5, 0.0);
+        glVertex3f(it2->getPosX()+7.5, it2->getPosY()-7.5, 0.0);
+        glVertex3f(it2->getPosX()-7.5, it2->getPosY()-7.5, 0.0);
       glEnd();
-    }
-    else
-    {
-      glBegin(GL_LINE_LOOP);
-        glVertex3f(it->getPosX()-7.5, it->getPosY()+7.5, 0.0);
-        glVertex3f(it->getPosX()+7.5, it->getPosY()+7.5, 0.0);
-        glVertex3f(it->getPosX()+7.5, it->getPosY()-7.5, 0.0);
-        glVertex3f(it->getPosX()-7.5, it->getPosY()-7.5, 0.0);
-      glEnd();
+      }
     }
   }
 }
@@ -90,6 +88,7 @@ void Game::addNpc(float x, float y, char c, const float color[4])
 
 void Game::processKeyboardKeys(unsigned char key, int x, int y) 
 {
+  
   switch(toupper(key))
   {
     case 'A':
