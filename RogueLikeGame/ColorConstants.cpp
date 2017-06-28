@@ -45,4 +45,6 @@ const float SKY_COLOR[4]          = { 0.1f, 0.2f, 0.7f, 1.0f };
 const float YELLOWF[4]            = { 1.0f, 1.0f, 0.0f, 1.0f };
 const float PEACHF[4]             = { 1.0f, 0.68f, 0.53f, 1.0f };
 
+const float BLOCKED_TILE[4]       = { 0.2f, 0.2f, 0.2f, 1.0f };
+const float NOT_BLOCKED_TILE[4]   = { 0.2f, 1.0f, 0.2f, 1.0f };
 

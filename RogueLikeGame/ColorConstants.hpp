@@ -39,4 +39,7 @@ extern const float SKY_COLOR[4];
 extern const float YELLOWF[4];
 extern const float  PEACHF[4];
 
+
+extern const float BLOCKED_TILE[4];
+extern const float NOT_BLOCKED_TILE[4];
 #endif  // COLOR_CONSTANTS_HPP

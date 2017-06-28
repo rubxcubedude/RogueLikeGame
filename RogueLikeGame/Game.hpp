@@ -4,12 +4,14 @@
 #include <vector>
 #include "Entity.hpp"
 #include "Player.hpp"
+#include "GameMap.hpp"
+
 #include "gl\freeglut.h"
 
 class Game
 {
   public:
-    Game (void);
+    Game (int width =800, int height = 500);
     ~Game (void);
     void initialize (std::vector<Entity*> v);
 
@@ -23,9 +25,14 @@ class Game
     
     void draw (void);
     void drawAllEntities(std::vector<Entity*> v);
+    void drawMap (void);
     
-    Player* p1;
-    std::vector<Entity*> vEntities;
+    Player* m_pPlayer;
+    GameMap m_pGameMap;
+    std::vector<Entity*> m_vEntities;
+
+    int m_nScreenWidth;
+    int m_nScreenHeight;
 };
 
 #endif

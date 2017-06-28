@@ -1,21 +1,25 @@
 #include "Game.hpp"
 #include "ColorConstants.hpp"
-Game::Game(void)
+Game::Game(int width, int height)
 {
-  p1= new Player(0.0f, 0.0f, '@', WHITEF);
-  vEntities.push_back(p1);
+  m_pPlayer = new Player(width/2.0, height/2.0+0.5, '@', WHITEF);
+  m_vEntities.push_back(m_pPlayer);
+  m_nScreenWidth = width;
+  m_nScreenHeight = height;
+  m_pGameMap.initialize(width, height);
+  int i =0;
 }
 
 Game::~Game(void)
 {
-  if(p1 != NULL) delete p1;
-  for(std::vector<Entity*>::iterator it= vEntities.begin(); it != vEntities.end(); ++it)
+  if(m_pPlayer != NULL) delete m_pPlayer;
+  for(std::vector<Entity*>::iterator it= m_vEntities.begin(); it != m_vEntities.end(); ++it)
     if ((*it) != NULL) delete (*it);
 }
 
 void Game::initialize(std::vector<Entity*> v)
 {
-    vEntities= v;
+    m_vEntities= v;
 }
 
 void Game::update()
@@ -27,8 +31,31 @@ void Game::draw(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //before we draw entities add the player
-  drawAllEntities(vEntities);
+  drawMap();
+  drawAllEntities(m_vEntities);
   glutSwapBuffers();
+}
+
+void Game::drawMap(void)
+{ 
+  //store our tiles real quick
+  std::vector<Tile> tempTiles = m_pGameMap.getTiles();
+  for(std::vector<Tile>::iterator it = tempTiles.begin(); it != tempTiles.end(); ++ it)
+  {
+    if(it->isBlocked())
+      glColor4fv(BLOCKED_TILE);
+    else if (it->isBlockingSight())
+      glColor4fv(NOT_BLOCKED_TILE);
+    else
+      glColor4fv(NOT_BLOCKED_TILE);
+    //what we drawing has to be character
+    glBegin(GL_LINE_LOOP);
+      glVertex3f(it->getPosX()-7.5, it->getPosY()+7.5, 0.0);
+      glVertex3f(it->getPosX()+7.5, it->getPosY()+7.5, 0.0);
+      glVertex3f(it->getPosX()+7.5, it->getPosY()-7.5, 0.0);
+      glVertex3f(it->getPosX()-7.5, it->getPosY()-7.5, 0.0);
+    glEnd();
+  }
 }
 
 void Game::drawAllEntities(std::vector<Entity*> v)
@@ -46,7 +73,7 @@ void Game::drawAllEntities(std::vector<Entity*> v)
 void Game::addNpc(float x, float y, char c, const float color[4])
 {
   Entity* n = new Entity(x,y,c,color);
-  vEntities.push_back(n);
+  m_vEntities.push_back(n);
 }
 
 void Game::processKeyboardKeys(unsigned char key, int x, int y) 
@@ -54,16 +81,16 @@ void Game::processKeyboardKeys(unsigned char key, int x, int y)
   switch(toupper(key))
   {
     case 'A':
-      p1->move(-0.01, 0);
+      m_pPlayer->move(-15, 0);
       break;
     case 'D':
-      p1->move(0.01, 0);
+      m_pPlayer->move(15, 0);
       break;
     case 'S':
-      p1->move(0, -0.01);
+      m_pPlayer->move(0, -15);
       break;
     case 'W':
-      p1->move(0, 0.01);
+      m_pPlayer->move(0, 15);
       break;      
   }
   glutPostRedisplay();
@@ -76,16 +103,16 @@ void Game::processDirectionKeys(int key, int x, int y)
   switch(key)
   {
     case GLUT_KEY_LEFT:
-      p1->move(-0.01, 0);
+      m_pPlayer->move(-15, 0);
       break;
     case GLUT_KEY_RIGHT:
-      p1->move(0.01, 0);
+      m_pPlayer->move(15, 0);
       break;
     case GLUT_KEY_DOWN:
-      p1->move(0, -0.01);
+      m_pPlayer->move(0, -15);
       break;
     case GLUT_KEY_UP:
-      p1->move(0, 0.01);
+      m_pPlayer->move(0, 15);
       break;      
   }
   glutPostRedisplay();
