@@ -29,6 +29,8 @@ int main (int argc, char** argv)
   glutInit(&argc, argv); // Start glut library, pass any extra command line commands to glut.
   glutInitWindowPosition(0,0);
   glutInitWindowSize(screen_width, screen_height);
+  
+  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
   glutCreateWindow ("OpenGL window");
   // set up the OpenGL projection matrix
   glMatrixMode(GL_PROJECTION);

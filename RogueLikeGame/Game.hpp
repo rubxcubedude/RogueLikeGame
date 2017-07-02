@@ -26,11 +26,13 @@ class Game
     void draw (void);
     void drawAllEntities(std::vector<Entity*> v);
     void drawMap (void);
-    
+    void loadTextureFromBmp (const char* szImageFileName);
     Player* m_pPlayer;
     GameMap m_pGameMap;
     std::vector<Entity*> m_vEntities;
 
+    GLuint m_uiTextureId;
+    std::string  m_pucTextureArray;
     int m_nScreenWidth;
     int m_nScreenHeight;
 };
