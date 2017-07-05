@@ -7,8 +7,11 @@ class Tile
     ~Tile (void);
     bool isBlocked (void);
     bool isBlockingSight (void);
+    
     double  getPosX (void);
     double  getPosY (void);
+
+    void setBlocked (bool b);
 
   private:
     double m_dPositionX;
@@ -37,5 +40,11 @@ inline double Tile::getPosY (void)
 {
   return m_dPositionY;
 
+}
+
+
+inline void Tile::setBlocked (bool b)
+{
+  m_bIsBlocked = b;
 }
 #endif

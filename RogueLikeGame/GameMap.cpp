@@ -1,4 +1,5 @@
 #include "GameMap.hpp"
+#include <time.h>
 GameMap::GameMap()
 {
 }
@@ -7,7 +8,7 @@ GameMap::~GameMap()
 {
 }
 
-void GameMap::initialize(int width, int height)
+void GameMap::initialize(int width, int height, Player* p, int max_rooms, int room_min_size, int room_max_size)
 {
   m_nMapHeight = height;
   m_nMapWidth = width;
@@ -16,12 +17,90 @@ void GameMap::initialize(int width, int height)
     std::vector<Tile> vTiles;
     for(int j = 0; j <height/15.0; ++j)
     {
-      if(j==0 || i == 0|| i == width/15 || j == height/15)
         vTiles.push_back(Tile(i*15,j*15, true));
-      else
-        vTiles.push_back(Tile(i*15,j*15));
     }
     m_mTiles.insert(make_pair(i, vTiles));
   }
+  time_t seconds;
+  time(&seconds);
+  srand((unsigned int) seconds);
 
+  //we always create 1 minimally sized room in middle of the map
+  Room room1(p->getX(), p->getY(), room_min_size, room_min_size);
+  create_room(room1);
+  int count = 1;
+  while(count < max_rooms)
+  {
+    Room room2(rand()%width,rand()%height,rand()%room_max_size+room_min_size,rand()%room_max_size+room_min_size);
+    if(!room1.intersect(room2))
+    {
+      create_room(room2);
+      count ++;
+    }
+    if(rand()%1 == 1)
+    {
+      create_h_tunnel(room1.getX(), room2.getX(), room1.getY());
+      create_v_tunnel(room1.getY(), room2.getY(), room2.getX());
+    }
+    else
+    {
+      create_v_tunnel(room1.getY(), room2.getY(), room1.getX());
+      create_h_tunnel(room1.getX(), room2.getX(), room2.getY());
+      
+    }
+  }
+}
+
+void GameMap::create_room(Room room)
+{
+  for(std::map<int,std::vector<Tile>>::iterator it = m_mTiles.begin(); it != m_mTiles.end(); ++ it)
+  {
+    for(std::vector<Tile>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+    {
+      for(int i =0; i <room.getWidth(); i++)
+      {
+        for(int j=0; j< room.getHeight(); j++)
+        {
+          if((room.getX()+(i*15) < it2->getPosX()+7.5 && room.getX() +(i*15) > it2->getPosX()-7.5) &&
+            (room.getY()+(j*15) < it2->getPosY()+7.5 && room.getY()+(j*15) > it2->getPosY()-7.5) &&
+             it2->getPosX()+7.5 < m_nMapWidth-7.5 && it2->getPosX()+7.5 > 7.5 &&
+             it2->getPosY()+7.5 < m_nMapHeight-7.5 && it2->getPosY()+7.5 > 7.5)
+          {
+            it2->setBlocked(false);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+void GameMap::create_h_tunnel (int x1, int x2, int y)
+{
+  for(std::map<int,std::vector<Tile>>::iterator it = m_mTiles.begin(); it != m_mTiles.end(); ++ it)
+  {
+    for(std::vector<Tile>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+    {
+      if(std::min(x1,x2) < it2->getPosX()+7.5 && std::max(x1,x2) > it2->getPosX()-7.5 &&
+        (y < it2->getPosY()+7.5 && y > it2->getPosY()-7.5))
+      {
+        it2->setBlocked(false);
+      }
+    }
+  }
+}
+
+void GameMap::create_v_tunnel (int y1, int y2, int x)
+{
+  for(std::map<int,std::vector<Tile>>::iterator it = m_mTiles.begin(); it != m_mTiles.end(); ++ it)
+  {
+    for(std::vector<Tile>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+    {
+      if(std::min(y1,y2) < it2->getPosY()+7.5 && std::max(y1,y2) > it2->getPosY()-7.5 &&
+        (x < it2->getPosX()+7.5 && x > it2->getPosX()-7.5))
+      {
+        it2->setBlocked(false);
+      }
+    }
+  }
 }

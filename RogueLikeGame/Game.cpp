@@ -7,7 +7,7 @@ Game::Game(int width, int height)
   m_vEntities.push_back(m_pPlayer);
   m_nScreenWidth = width;
   m_nScreenHeight = height;
-  m_pGameMap.initialize(width, height);
+  m_pGameMap.initialize(width, height, m_pPlayer, 6);
   loadTextureFromBmp("walltile.bmp");
   int i =0;
 }
@@ -15,8 +15,6 @@ Game::Game(int width, int height)
 Game::~Game(void)
 {
   if(m_pPlayer != NULL) delete m_pPlayer;
-  for(std::vector<Entity*>::iterator it= m_vEntities.begin(); it != m_vEntities.end(); ++it)
-    if ((*it) != NULL) delete (*it);
 }
 
 void Game::initialize(std::vector<Entity*> v)
@@ -55,7 +53,7 @@ void Game::drawMap(void)
       //what we drawing has to be character
       if(it2->isBlocked())
       {
-        glEnable(GL_TEXTURE_2D);
+        /*glEnable(GL_TEXTURE_2D);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glGenTextures(1, &m_uiTextureId);
         glBindTexture(GL_TEXTURE_2D, m_uiTextureId);
@@ -67,14 +65,14 @@ void Game::drawMap(void)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB,
                GL_UNSIGNED_BYTE, m_pucTextureArray.c_str());
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        glBindTexture(GL_TEXTURE_2D, m_uiTextureId);
+        glBindTexture(GL_TEXTURE_2D, m_uiTextureId);*/
         glBegin( GL_QUADS );
           glTexCoord2d(0.0,1.0); glVertex3f(it2->getPosX()-7.5, it2->getPosY()+7.5, 0.0);
           glTexCoord2d(1.0,1.0); glVertex3f(it2->getPosX()+7.5, it2->getPosY()+7.5, 0.0);
           glTexCoord2d(1.0,0.0); glVertex3f(it2->getPosX()+7.5, it2->getPosY()-7.5, 0.0);
           glTexCoord2d(0.0,0.0); glVertex3f(it2->getPosX()-7.5, it2->getPosY()-7.5, 0.0);
         glEnd();
-        glDisable(GL_TEXTURE_2D);
+        //glDisable(GL_TEXTURE_2D);
       }
       else
       {

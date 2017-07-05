@@ -25,7 +25,7 @@ int main (int argc, char** argv)
 {
   int screen_width = 800;
   int screen_height = 500;
-  g.addNpc(25,25,'N', YELLOWF);
+  
   glutInit(&argc, argv); // Start glut library, pass any extra command line commands to glut.
   glutInitWindowPosition(0,0);
   glutInitWindowSize(screen_width, screen_height);
