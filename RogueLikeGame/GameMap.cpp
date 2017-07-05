@@ -28,26 +28,27 @@ void GameMap::initialize(int width, int height, Player* p, int max_rooms, int ro
   //we always create 1 minimally sized room in middle of the map
   Room room1(p->getX(), p->getY(), room_min_size, room_min_size);
   create_room(room1);
+
   int count = 1;
   while(count < max_rooms)
   {
     Room room2(rand()%width,rand()%height,rand()%room_max_size+room_min_size,rand()%room_max_size+room_min_size);
-    if(!room1.intersect(room2))
+    if(!room1.intersect(room2) && room2.getX() > 15 && room2.getY() > 15  
+       && (room2.getX()+room2.getX()*room2.getWidth()) < (width - 15) && (room2.getY()+room2.getY()*room2.getHeight()) < (height - 15))
     {
       create_room(room2);
       count ++;
-    }
-    if(rand()%1 == 1)
-    {
-      create_h_tunnel(room1.getX(), room2.getX(), room1.getY());
-      create_v_tunnel(room1.getY(), room2.getY(), room2.getX());
-    }
-    else
-    {
-      create_v_tunnel(room1.getY(), room2.getY(), room1.getX());
-      create_h_tunnel(room1.getX(), room2.getX(), room2.getY());
-      
-    }
+      if(rand()%2 == 1)
+      {
+        create_h_tunnel(room1.getX(), room2.getX(), room1.getY());
+        create_v_tunnel(room1.getY(), room2.getY(), room2.getX());
+      }
+      else
+      {
+        create_v_tunnel(room1.getY(), room2.getY(), room1.getX());
+        create_h_tunnel(room1.getX(), room2.getX(), room2.getY());   
+      }
+    }   
   }
 }
 
@@ -62,9 +63,7 @@ void GameMap::create_room(Room room)
         for(int j=0; j< room.getHeight(); j++)
         {
           if((room.getX()+(i*15) < it2->getPosX()+7.5 && room.getX() +(i*15) > it2->getPosX()-7.5) &&
-            (room.getY()+(j*15) < it2->getPosY()+7.5 && room.getY()+(j*15) > it2->getPosY()-7.5) &&
-             it2->getPosX()+7.5 < m_nMapWidth-7.5 && it2->getPosX()+7.5 > 7.5 &&
-             it2->getPosY()+7.5 < m_nMapHeight-7.5 && it2->getPosY()+7.5 > 7.5)
+            (room.getY()+(j*15) < it2->getPosY()+7.5 && room.getY()+(j*15) > it2->getPosY()-7.5))
           {
             it2->setBlocked(false);
           }
@@ -96,7 +95,7 @@ void GameMap::create_v_tunnel (int y1, int y2, int x)
   {
     for(std::vector<Tile>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
     {
-      if(std::min(y1,y2) < it2->getPosY()+7.5 && std::max(y1,y2) > it2->getPosY()-7.5 &&
+      if(std::min(y1,y2) < it2->getPosY()-7.5 && std::max(y1,y2) > it2->getPosY()-7.5 &&
         (x < it2->getPosX()+7.5 && x > it2->getPosX()-7.5))
       {
         it2->setBlocked(false);

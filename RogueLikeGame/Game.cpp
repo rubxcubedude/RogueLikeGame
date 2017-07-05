@@ -38,6 +38,14 @@ void Game::draw(void)
 
 void Game::drawMap(void)
 { 
+  /*glEnable(GL_TEXTURE_2D);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glGenTextures(1, &m_uiTextureId);
+        glBindTexture(GL_TEXTURE_2D, m_uiTextureId);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);*/
   //store our tiles real quick
   std::map<int,std::vector<Tile>> tempTiles = m_pGameMap.getTiles();
   for(std::map<int,std::vector<Tile>>::iterator it = tempTiles.begin(); it != tempTiles.end(); ++ it)
@@ -53,26 +61,19 @@ void Game::drawMap(void)
       //what we drawing has to be character
       if(it2->isBlocked())
       {
-        /*glEnable(GL_TEXTURE_2D);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glGenTextures(1, &m_uiTextureId);
-        glBindTexture(GL_TEXTURE_2D, m_uiTextureId);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB,
                GL_UNSIGNED_BYTE, m_pucTextureArray.c_str());
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        glBindTexture(GL_TEXTURE_2D, m_uiTextureId);*/
+        glBindTexture(GL_TEXTURE_2D, m_uiTextureId);
         glBegin( GL_QUADS );
           glTexCoord2d(0.0,1.0); glVertex3f(it2->getPosX()-7.5, it2->getPosY()+7.5, 0.0);
           glTexCoord2d(1.0,1.0); glVertex3f(it2->getPosX()+7.5, it2->getPosY()+7.5, 0.0);
           glTexCoord2d(1.0,0.0); glVertex3f(it2->getPosX()+7.5, it2->getPosY()-7.5, 0.0);
           glTexCoord2d(0.0,0.0); glVertex3f(it2->getPosX()-7.5, it2->getPosY()-7.5, 0.0);
         glEnd();
-        //glDisable(GL_TEXTURE_2D);
+        
       }
       else
       {
@@ -85,6 +86,7 @@ void Game::drawMap(void)
       }
     }
   }
+ // glDisable(GL_TEXTURE_2D);
 }
 
 void Game::drawAllEntities(std::vector<Entity*> v)
