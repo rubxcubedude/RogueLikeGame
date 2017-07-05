@@ -11,6 +11,8 @@ class Entity{
     float getY (void) const;
     char getChar (void) const;
 		float* getColor (void) const;
+
+    void setPos(float x, float y);
   protected:
     float m_dPosition_x;
     float m_dPosition_y;
@@ -36,6 +38,12 @@ inline char Entity::getChar (void) const
 inline float* Entity::getColor (void) const
 {
   return (float*)m_afDisplay_color;
+}
+
+inline void Entity::setPos (float x, float y)
+{
+  m_dPosition_x = x;
+  m_dPosition_y = y;
 }
 
 #endif

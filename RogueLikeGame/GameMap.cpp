@@ -28,25 +28,35 @@ void GameMap::initialize(int width, int height, Player* p, int max_rooms, int ro
   //we always create 1 minimally sized room in middle of the map
   Room room1(p->getX(), p->getY(), room_min_size, room_min_size);
   create_room(room1);
-
+  m_vRooms.push_back(room1);
   int count = 1;
   while(count < max_rooms)
   {
-    Room room2(rand()%width,rand()%height,rand()%room_max_size+room_min_size,rand()%room_max_size+room_min_size);
-    if(!room1.intersect(room2) && room2.getX() > 15 && room2.getY() > 15  
+    Room room2(rand()%width,rand()%height,rand()%(room_max_size-room_min_size)+room_min_size,rand()%(room_max_size-room_min_size)+room_min_size);
+    if(room2.getX() > 15 && room2.getY() > 15  
        && (room2.getX()+room2.getX()*room2.getWidth()) < (width - 15) && (room2.getY()+room2.getY()*room2.getHeight()) < (height - 15))
     {
-      create_room(room2);
-      count ++;
-      if(rand()%2 == 1)
+      bool intersect = false;
+      for(std::vector<Room>::iterator it= m_vRooms.begin(); it != m_vRooms.end(); ++ it)
       {
-        create_h_tunnel(room1.getX(), room2.getX(), room1.getY());
-        create_v_tunnel(room1.getY(), room2.getY(), room2.getX());
+        bool val = room2.intersect(*it);
+        intersect = intersect || val;
       }
-      else
+      if(!intersect)
       {
-        create_v_tunnel(room1.getY(), room2.getY(), room1.getX());
-        create_h_tunnel(room1.getX(), room2.getX(), room2.getY());   
+        m_vRooms.push_back(room2);
+        create_room(room2);
+        count ++;
+        if(rand()%2 == 1)
+        {
+          create_h_tunnel(room1.getX(), room2.getX(), room1.getY());
+          create_v_tunnel(room1.getY(), room2.getY(), room2.getX());
+        }
+        else
+        {
+          create_v_tunnel(room1.getY(), room2.getY(), room1.getX());
+          create_h_tunnel(room1.getX(), room2.getX(), room2.getY());   
+        }
       }
     }   
   }
