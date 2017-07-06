@@ -32,9 +32,15 @@ void GameMap::initialize(int width, int height, Player* p, int max_rooms, int ro
   int count = 1;
   while(count < max_rooms)
   {
-    Room room2(rand()%width,rand()%height,rand()%(room_max_size-room_min_size)+room_min_size,rand()%(room_max_size-room_min_size)+room_min_size);
-    if(room2.getX() > 15 && room2.getY() > 15  
-       && (room2.getX()+room2.getX()*room2.getWidth()) < (width - 15) && (room2.getY()+room2.getY()*room2.getHeight()) < (height - 15))
+    int x = 15 + int(rand())%(width/15)*15;
+    int y = 15 + int(rand())%(height/15)*15;
+    
+
+    Room room2(x, y, int(rand())%(room_max_size-room_min_size)+room_min_size, int(rand())%(room_max_size-room_min_size)+room_min_size);
+    int width2 = room2.getX()+15*room2.getWidth();
+    int height2 = room2.getY()+15*room2.getHeight();
+
+    if( width2 < (width - 15) && height2 < (height - 15))
     {
       bool intersect = false;
       for(std::vector<Room>::iterator it= m_vRooms.begin(); it != m_vRooms.end(); ++ it)

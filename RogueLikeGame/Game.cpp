@@ -3,11 +3,11 @@
 
 Game::Game(int width, int height)
 {
-  m_pPlayer = new Player(width/2.0, height/2.0+0.5, '@', WHITEF);
+  m_pPlayer = new Player(width/2.0+0.5, height/2.0-3, '@', WHITEF);
   m_vEntities.push_back(m_pPlayer);
   m_nScreenWidth = width;
   m_nScreenHeight = height;
-  m_pGameMap.initialize(width, height, m_pPlayer, 6, 3, 5);
+  m_pGameMap.initialize(width, height, m_pPlayer, 20, 3, 5);
   loadTextureFromBmp("walltile.bmp");
   int i =0;
 }

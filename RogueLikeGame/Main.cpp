@@ -6,7 +6,9 @@ using std::string;
 #include "Game.hpp"
 #include "ColorConstants.hpp"
 
-Game g;
+int screen_width = 976;
+int screen_height = 751;
+Game g(screen_width, screen_height);
 
 void processKeyboardKeys(unsigned char key, int x, int y) {
   g.processKeyboardKeys(key, x, y);
@@ -23,9 +25,6 @@ void renderScene()
 
 int main (int argc, char** argv)
 {
-  int screen_width = 800;
-  int screen_height = 500;
-  
   glutInit(&argc, argv); // Start glut library, pass any extra command line commands to glut.
   glutInitWindowPosition(0,0);
   glutInitWindowSize(screen_width, screen_height);
