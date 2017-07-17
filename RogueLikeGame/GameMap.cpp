@@ -1,5 +1,6 @@
 #include "GameMap.hpp"
 #include <time.h>
+
 GameMap::GameMap()
 {
 }
@@ -12,12 +13,13 @@ void GameMap::initialize(int width, int height, Player* p, int max_rooms, int ro
 {
   m_nMapHeight = height;
   m_nMapWidth = width;
+  m_pPlayer = p;
   for(int i = 0; i<width/15.0; ++i)
   {
     std::vector<Tile> vTiles;
     for(int j = 0; j <height/15.0; ++j)
     {
-        vTiles.push_back(Tile(i*15,j*15, true));
+        vTiles.push_back(Tile(i*15,j*15));
     }
     m_mTiles.insert(make_pair(i, vTiles));
   }
@@ -116,6 +118,26 @@ void GameMap::create_v_tunnel (int y1, int y2, int x)
       {
         it2->setBlocked(false);
       }
+    }
+  }
+}
+
+void GameMap::updateFOV()
+{
+  float x = m_pPlayer->getX();
+  float y = m_pPlayer->getY();
+  for(std::map<int,std::vector<Tile>>::iterator it = m_mTiles.begin(); it != m_mTiles.end(); ++ it)
+  {
+    for(std::vector<Tile>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+    {   
+      if( x < it2->getPosX()+20 && x > it2->getPosX()-30 &&
+          y < it2->getPosY()+20 && y > it2->getPosY()-20)
+      {  
+        it2->setIsBlockedSight(false);
+        it2->setIsDark(false);
+      }
+      else
+        it2->setIsDark(true);
     }
   }
 }

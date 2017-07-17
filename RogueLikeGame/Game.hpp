@@ -27,6 +27,7 @@ class Game
     void drawAllEntities(std::vector<Entity*> v);
     void drawMap (void);
     void loadTextureFromBmp (const char* szImageFileName);
+    
     Player* m_pPlayer;
     GameMap m_pGameMap;
     std::vector<Entity*> m_vEntities;

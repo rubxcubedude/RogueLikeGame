@@ -1,6 +1,9 @@
 #include "Game.hpp"
 #include "ColorConstants.hpp"
 
+
+
+
 Game::Game(int width, int height)
 {
   m_pPlayer = new Player(width/2.0+0.5, height/2.0-3, '@', WHITEF);
@@ -8,6 +11,7 @@ Game::Game(int width, int height)
   m_nScreenWidth = width;
   m_nScreenHeight = height;
   m_pGameMap.initialize(width, height, m_pPlayer, 20, 3, 5);
+  m_pGameMap.updateFOV();
   loadTextureFromBmp("walltile.bmp");
   int i =0;
 }
@@ -52,17 +56,19 @@ void Game::drawMap(void)
   {
     for(std::vector<Tile>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
     {
-      if(it2->isBlocked())
+      if (it2->isBlockedSight())
+        glColor4fv(BLACKF);
+      else if(it2->isBlocked() && !it2->isDark())
         glColor4fv(BLOCKED_TILE);
-      else if (it2->isBlockingSight())
-        glColor4fv(NOT_BLOCKED_TILE);
+      else if(it2->isBlocked() )
+        glColor4fv(DARK_WALL);
+      else if(it2->isDark())
+        glColor4fv(DARK_GROUND);
       else
         glColor4fv(NOT_BLOCKED_TILE);
       //what we drawing has to be character
       if(it2->isBlocked())
       {
-        
-
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB,
                GL_UNSIGNED_BYTE, m_pucTextureArray.c_str());
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
@@ -77,7 +83,7 @@ void Game::drawMap(void)
       }
       else
       {
-       glBegin(GL_LINE_LOOP);
+       glBegin(GL_QUADS);
         glVertex3f(it2->getPosX()-7.5, it2->getPosY()+7.5, 0.0);
         glVertex3f(it2->getPosX()+7.5, it2->getPosY()+7.5, 0.0);
         glVertex3f(it2->getPosX()+7.5, it2->getPosY()-7.5, 0.0);
@@ -134,6 +140,7 @@ void Game::processKeyboardKeys(unsigned char key, int x, int y)
         m_pPlayer->move(0, -15);
       break;      
   }
+  m_pGameMap.updateFOV();
   glutPostRedisplay();
   if (key == 27)
     exit(0);
@@ -167,6 +174,7 @@ void Game::processDirectionKeys(int key, int x, int y)
         m_pPlayer->move(0, -15);
       break;      
   }
+  m_pGameMap.updateFOV();
   glutPostRedisplay();
   if (key == 27)
     exit(0);
@@ -213,3 +221,5 @@ void Game::loadTextureFromBmp (const char* szImageFileName)
   // close the texture file
   fclose(fpBmpFile);
 }
+
+

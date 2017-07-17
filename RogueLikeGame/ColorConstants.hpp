@@ -42,4 +42,7 @@ extern const float  PEACHF[4];
 
 extern const float BLOCKED_TILE[4];
 extern const float NOT_BLOCKED_TILE[4];
+
+extern const float DARK_WALL[4];
+extern const float DARK_GROUND[4];
 #endif  // COLOR_CONSTANTS_HPP

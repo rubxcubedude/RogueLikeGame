@@ -46,5 +46,8 @@ const float YELLOWF[4]            = { 1.0f, 1.0f, 0.0f, 1.0f };
 const float PEACHF[4]             = { 1.0f, 0.68f, 0.53f, 1.0f };
 
 const float BLOCKED_TILE[4]       = { 0.4f, 0.3f, 0.0f, 1.0f };
-const float NOT_BLOCKED_TILE[4]   = { 0.2f, 1.0f, 0.2f, 1.0f };
+const float NOT_BLOCKED_TILE[4]   = { 0.5f, 0.5f, 0.5f, 1.0f };
+
+const float DARK_WALL[4]          = { 0.2f, 0.1f, 0.0f, 1.0f };
+const float DARK_GROUND[4]        = { 0.2f, 0.2f, 0.2f, 1.0f };
 
