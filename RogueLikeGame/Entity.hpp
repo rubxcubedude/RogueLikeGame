@@ -4,28 +4,30 @@
 #include <string>
 class Entity{
   public:
-    Entity (float x, float y, char c, const float color[4]);
+    Entity (int x, int y, char c, const float color[4]);
     ~Entity (void);
     void move (int dx, int dy);
-    float getX (void) const;
-    float getY (void) const;
+    int getX (void) const;
+    int getY (void) const;
     char getChar (void) const;
 		float* getColor (void) const;
+    bool isVisible (void) const;
 
-    void setPos(float x, float y);
+    void setPos(int x, int y);
   protected:
-    float m_dPosition_x;
-    float m_dPosition_y;
+    int m_dPosition_x;
+    int m_dPosition_y;
     char  m_cDisplay_char;
     float m_afDisplay_color[4];
+    bool m_bIsVisible;
 };
 
-inline float Entity::getX (void) const
+inline int Entity::getX (void) const
 {
   return m_dPosition_x;
 }
 
-inline float Entity::getY (void) const
+inline int Entity::getY (void) const
 {
   return m_dPosition_y;
 }
@@ -40,10 +42,16 @@ inline float* Entity::getColor (void) const
   return (float*)m_afDisplay_color;
 }
 
-inline void Entity::setPos (float x, float y)
+inline void Entity::setPos (int x, int y)
 {
   m_dPosition_x = x;
   m_dPosition_y = y;
+}
+
+
+inline bool Entity::isVisible(void) const
+{
+  return m_bIsVisible;
 }
 
 #endif

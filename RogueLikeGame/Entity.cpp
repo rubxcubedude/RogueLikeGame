@@ -1,11 +1,12 @@
 #include "Entity.hpp"
 
-Entity::Entity(float x, float y, char c, const float color[4])
+Entity::Entity(int x, int y, char c, const float color[4])
 {
   m_dPosition_x = x;
   m_dPosition_y = y;
   m_cDisplay_char = c;
 	memcpy(m_afDisplay_color, color, sizeof(m_afDisplay_color));
+  m_bIsVisible = false;
 }
 
 Entity::~Entity()

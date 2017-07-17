@@ -2,6 +2,7 @@
 #define GAME_MAP_HPP
 #include <map>
 #include <vector>
+#include "gl/freeglut.h"
 #include "Room.hpp"
 #include "Tile.hpp"
 #include "Player.hpp"
@@ -10,7 +11,8 @@ class GameMap
   public:
     GameMap (void);
     ~GameMap (void);
-    void initialize (int width, int height, Player* p, int max_rooms = 6, int room_min_size = 3, int room_max_size=5);
+    void initialize (int width, int height, Player* p, int max_rooms = 6);
+    void draw (void);
     std::map<int,std::vector<Tile>> getTiles (void);
     void updateFOV (void);
   private:
@@ -22,6 +24,13 @@ class GameMap
     void create_room (Room room);
     std::vector<Room> m_vRooms;
     Player* m_pPlayer;
+    std::vector<Entity*> m_vEntities;
+    void drawAllEntities();
+    void drawMap (void);
+    void loadTextureFromBmp (const char* szImageFileName);
+    GLuint m_uiTextureId;
+    std::string  m_pucTextureArray;
+    void createDungeon (int maxRooms);
    
 };
 
