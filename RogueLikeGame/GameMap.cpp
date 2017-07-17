@@ -42,7 +42,7 @@ void GameMap::createDungeon(int max_rooms)
 
   //we always create 1 minimally sized room in middle of the map
   Room room1(m_pPlayer->getX(), m_pPlayer->getY(), room_min_size, room_min_size);
-  create_room(room1);
+  create_room(room1 , false);
   m_vRooms.push_back(room1);
   int count = 1;
   while(count < max_rooms)
@@ -83,12 +83,8 @@ void GameMap::createDungeon(int max_rooms)
   }
 }
 
-void GameMap::create_room(Room room)
+void GameMap::create_room(Room room, bool createNPC)
 {
-  time_t seconds;
-  time(&seconds);
-  srand((unsigned int) seconds);
-
   int monsterX = rand() % room.getWidth();
   int monsterY = rand() % room.getHeight();
 
@@ -104,11 +100,11 @@ void GameMap::create_room(Room room)
             (room.getY()+(j*15) < it2->getPosY()+7.5 && room.getY()+(j*15) > it2->getPosY()-7.5))
           {
             it2->setBlocked(false);
-            /*if(monsterX == i && monsterY == j)
+            if(createNPC && monsterX == i && monsterY == j)
             {
               Entity* t = new Entity(room.getX()+(i*15), room.getY()+(j*15), 'T', YELLOWF); 
               m_vEntities.push_back(t);
-            }*/
+            }
           }
         }
       }
@@ -167,6 +163,15 @@ void GameMap::updateFOV()
         it2->setIsDark(true);
     }
   }
+  for(std::vector<Entity*>::iterator it = m_vEntities.begin(); it != m_vEntities.end(); ++ it)
+  {
+    if( x < (*it)->getX()+20 && x > (*it)->getX()-30 &&
+          y < (*it)->getY()+20 && y > (*it)->getY()-20)
+      {  
+        (*it)->setIsVisible(true);
+      }
+  }
+
 }
 
 void GameMap::draw(void)
@@ -279,6 +284,7 @@ void GameMap::drawAllEntities()
 		glColor4fv((*it)->getColor());
     glRasterPos2d((*it)->getX(),(*it)->getY());
     //what we drawing has to be character
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*it)->getChar());
+    if((*it)->isVisible())
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, (*it)->getChar());
   }
 }

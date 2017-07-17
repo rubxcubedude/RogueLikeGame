@@ -21,7 +21,7 @@ class GameMap
     std::map<int,std::vector<Tile>> m_mTiles;
     void create_h_tunnel (int x1, int x2, int y);
     void create_v_tunnel (int y1, int y2, int x);
-    void create_room (Room room);
+    void create_room (Room room, bool createNPC = true);
     std::vector<Room> m_vRooms;
     Player* m_pPlayer;
     std::vector<Entity*> m_vEntities;

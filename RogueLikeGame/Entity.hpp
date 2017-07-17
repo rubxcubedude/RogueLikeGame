@@ -14,6 +14,7 @@ class Entity{
     bool isVisible (void) const;
 
     void setPos(int x, int y);
+    void setIsVisible (bool b);
   protected:
     int m_dPosition_x;
     int m_dPosition_y;
@@ -46,6 +47,12 @@ inline void Entity::setPos (int x, int y)
 {
   m_dPosition_x = x;
   m_dPosition_y = y;
+}
+
+
+inline void Entity::setIsVisible (bool b)
+{
+  m_bIsVisible = b;
 }
 
 
