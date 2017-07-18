@@ -95,7 +95,7 @@ void GameMap::create_room(Room room, bool createNPC)
           if((room.getX()+(k*15) < m_mTiles[i][j].getPosX()+7.5 && room.getX() +(k*15) > m_mTiles[i][j].getPosX()-7.5) &&
             (room.getY()+(l*15) < m_mTiles[i][j].getPosY()+7.5 && room.getY()+(l*15) > m_mTiles[i][j].getPosY()-7.5))
           {
-            m_mTiles[i][j].setBlocked(false);
+            m_mTiles[i][j].setIsWall(false);
             if(createNPC && monsterX == k && monsterY == l)
             {
               Entity t;
@@ -119,7 +119,7 @@ void GameMap::create_h_tunnel (int x1, int x2, int y)
       if(std::min(x1,x2) < m_mTiles[i][j].getPosX()+7.5 && std::max(x1,x2) > m_mTiles[i][j].getPosX()-7.5 &&
         (y < m_mTiles[i][j].getPosY()+7.5 && y > m_mTiles[i][j].getPosY()-7.5))
       {
-        m_mTiles[i][j].setBlocked(false);
+        m_mTiles[i][j].setIsWall(false);
       }
     }
   }
@@ -134,7 +134,7 @@ void GameMap::create_v_tunnel (int y1, int y2, int x)
       if(std::min(y1,y2) < m_mTiles[i][j].getPosY()-7.5 && std::max(y1,y2) > m_mTiles[i][j].getPosY()-7.5 &&
         (x < m_mTiles[i][j].getPosX()+7.5 && x > m_mTiles[i][j].getPosX()-7.5))
       {
-        m_mTiles[i][j].setBlocked(false);
+        m_mTiles[i][j].setIsWall(false);
       }
     }
   }

@@ -6,7 +6,7 @@
 class Tile
 {
   public:
-    Tile (bool isBlocked=true, bool isBlockedSight=true);
+    Tile (bool m_bIsWall = true, bool isBlocked=true, bool isBlockedSight=true);
     ~Tile (void);
 
     void init(double x, double y);
@@ -22,6 +22,7 @@ class Tile
     void setBlocked (bool b);
     void setIsBlockedSight (bool b);
     void setIsDark (bool b);
+    void setIsWall (bool b);
 
   private:
     double m_dPositionX;
@@ -30,6 +31,7 @@ class Tile
     bool m_bIsBlockedSight;
     bool m_bIsDark;
     bool m_bHasEntity;
+    bool m_bIsWall;
     Entity m_pEntity;
 };
 
@@ -47,12 +49,18 @@ inline double Tile::getPosY (void)
 
 inline bool Tile::isBlocked (void)
 {
-  return m_bIsBlocked;
+  return m_bIsWall || m_bHasEntity;
 }
 
 inline void Tile::setBlocked (bool b)
 {
   m_bIsBlocked = b;
+}
+
+
+inline void Tile::setIsWall (bool b)
+{
+  m_bIsWall = b;
 }
 
 
