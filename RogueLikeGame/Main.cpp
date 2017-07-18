@@ -8,7 +8,7 @@ using std::string;
 
 int screen_width = 976;
 int screen_height = 751;
-Game g(screen_width, screen_height);
+Game g;
 
 void processKeyboardKeys(unsigned char key, int x, int y) {
   g.processKeyboardKeys(key, x, y);

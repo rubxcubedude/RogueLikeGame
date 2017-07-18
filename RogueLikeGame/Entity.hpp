@@ -1,12 +1,17 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
+#include "gl\freeglut.h"
 
 #include <string>
 class Entity{
   public:
-    Entity (int x, int y, char c, const float color[4]);
+    Entity ();
     ~Entity (void);
+
+    void init(int x, int y, char c, const float color[4]);
     void move (int dx, int dy);
+    void draw (void);
+
     int getX (void) const;
     int getY (void) const;
     char getChar (void) const;
@@ -15,6 +20,7 @@ class Entity{
 
     void setPos(int x, int y);
     void setIsVisible (bool b);
+
   protected:
     int m_dPosition_x;
     int m_dPosition_y;

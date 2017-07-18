@@ -1,5 +1,10 @@
 #include "Room.hpp"
 
+
+Room::Room()
+{
+}
+
 Room::Room(int x, int y, int w, int h)
 {
   m_nX = x;
@@ -10,6 +15,14 @@ Room::Room(int x, int y, int w, int h)
 
 Room::~Room()
 {
+}
+
+void Room::init(int x, int y, int w, int h)
+{
+  m_nX = x;
+  m_nY = y;
+  m_nWidth = w;
+  m_nHeight = h;
 }
 
 

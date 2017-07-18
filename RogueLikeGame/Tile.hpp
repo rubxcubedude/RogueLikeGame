@@ -1,16 +1,23 @@
 #ifndef TILE_HPP
 #define TILE_HPP
+#include "Entity.hpp"
+#include "ColorConstants.hpp"
+#include "gl\freeglut.h"
 class Tile
 {
   public:
-    Tile (double x, double y, bool isBlocked=true, bool isBlockedSight=true);
+    Tile (bool isBlocked=true, bool isBlockedSight=true);
     ~Tile (void);
-    bool isBlocked (void);
-    bool isBlockedSight (void);
-    bool isDark (void);
-    
+
+    void init(double x, double y);
+    void draw (void);
+    void addEntity(Entity t);
+    void removeEntity (void);
+
     double  getPosX (void);
     double  getPosY (void);
+
+    bool isBlocked (void);
 
     void setBlocked (bool b);
     void setIsBlockedSight (bool b);
@@ -22,23 +29,9 @@ class Tile
     bool m_bIsBlocked;
     bool m_bIsBlockedSight;
     bool m_bIsDark;
+    bool m_bHasEntity;
+    Entity m_pEntity;
 };
-
-inline bool Tile::isBlocked (void)
-{
-  return m_bIsBlocked;
-}
-
-inline bool Tile::isBlockedSight (void)
-{
-  return m_bIsBlockedSight;
-}
-
-
-inline bool Tile::isDark (void)
-{
-  return m_bIsDark;
-}
 
 inline double Tile::getPosX (void)
 {
@@ -52,6 +45,10 @@ inline double Tile::getPosY (void)
 
 }
 
+inline bool Tile::isBlocked (void)
+{
+  return m_bIsBlocked;
+}
 
 inline void Tile::setBlocked (bool b)
 {
@@ -62,6 +59,8 @@ inline void Tile::setBlocked (bool b)
 inline void Tile::setIsBlockedSight (bool b)
 {
   m_bIsBlockedSight = b;
+  if(!b)
+    m_pEntity.setIsVisible(true);
 }
 
 
