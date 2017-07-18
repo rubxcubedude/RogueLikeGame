@@ -21,6 +21,7 @@ Game::~Game(void)
 void Game::update()
 {
   draw();
+  m_pGameMap.processState();
 }
 
 void Game::draw(void)
@@ -70,7 +71,7 @@ void Game::processDirectionKeys(int key, int x, int y)
       m_pGameMap.movePlayerDown();
       break;
     case GLUT_KEY_UP:
-      m_pGameMap.movePlayerUp();
+     m_pGameMap.movePlayerUp();
       break;      
   }
   m_pGameMap.updateFOV();

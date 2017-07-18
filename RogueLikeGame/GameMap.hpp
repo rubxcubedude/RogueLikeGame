@@ -5,6 +5,10 @@
 #include "Room.hpp"
 #include "Tile.hpp"
 #include "Player.hpp"
+
+enum GameState{PLAYER_TURN, NPC_TURN};
+
+
 class GameMap
 {
   public:
@@ -12,6 +16,7 @@ class GameMap
     ~GameMap (void);
     void initialize (int max_rooms = 6);
     void draw (void);
+    void processState (void);
     void updateFOV (void);
 
     void movePlayerUp (void);
@@ -33,6 +38,7 @@ class GameMap
     GLuint m_uiTextureId;
     std::string  m_pucTextureArray;
     void createDungeon (int maxRooms);
+    GameState m_pCurrentState;
    
 };
 #endif

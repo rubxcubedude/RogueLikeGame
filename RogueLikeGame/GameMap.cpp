@@ -4,6 +4,7 @@
 
 GameMap::GameMap()
 {
+  m_pCurrentState = PLAYER_TURN;
 }
 
 GameMap::~GameMap()
@@ -179,6 +180,13 @@ void GameMap::draw(void)
   drawMap();
 }
 
+void GameMap::processState(void)
+{
+  int i= 0;
+  if(m_pCurrentState != PLAYER_TURN)
+    m_pCurrentState = PLAYER_TURN;
+}
+
 void GameMap::drawMap(void)
 { 
   for(int i = 0; i<m_nMapWidth/15.0; ++i)
@@ -233,40 +241,56 @@ void GameMap::loadTextureFromBmp (const char* szImageFileName)
 
 void GameMap::movePlayerUp (void)
 { 
-  if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].isBlocked())
+  if(m_pCurrentState == PLAYER_TURN)
   {
-    m_pPlayer.move(0,1);
-    m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-    m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].removeEntity();
+    if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].isBlocked())
+    {
+      m_pPlayer.move(0,1);
+      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
+      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].removeEntity();
+    }
   }
+  m_pCurrentState = NPC_TURN;
 }
 
 void GameMap::movePlayerDown (void)
 {
-  if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].isBlocked())
+  if(m_pCurrentState == PLAYER_TURN)
   {
-    m_pPlayer.move(0,-1);
-    m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-    m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].removeEntity();
+    if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].isBlocked())
+    {
+      m_pPlayer.move(0,-1);
+      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
+      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].removeEntity();
+    }
   }
+  m_pCurrentState = NPC_TURN;
 }
 
 void GameMap::movePlayerLeft (void)
 {
-  if(!m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].isBlocked())
+  if(m_pCurrentState == PLAYER_TURN)
   {
-    m_pPlayer.move(-1,0);
-    m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-    m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].removeEntity();
-  }
+    if(!m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].isBlocked())
+    {
+      m_pPlayer.move(-1,0);
+      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
+      m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].removeEntity();
+    }
+  } 
+  m_pCurrentState = NPC_TURN;
 }
 
 void GameMap::movePlayerRight (void)
 {
-  if(!m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].isBlocked())
+  if(m_pCurrentState == PLAYER_TURN)
   {
-    m_pPlayer.move(1,0);
-    m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-    m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].removeEntity();
+    if(!m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].isBlocked())
+    {
+      m_pPlayer.move(1,0);
+      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
+      m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].removeEntity();
+    }
+    m_pCurrentState = NPC_TURN;
   }
 }
