@@ -4,19 +4,17 @@
 
 
 
-Game::Game(int width, int height)
+Game::Game()
 {
-  m_pPlayer = new Player(width/2.0+0.5, height/2.0-3, '@', WHITEF);
-  m_nScreenWidth = width;
-  m_nScreenHeight = height;
-  m_pGameMap.initialize(width, height, m_pPlayer, 20);
+  m_nScreenWidth = 976;
+  m_nScreenHeight = 751;
+  m_pGameMap.initialize(20);
   m_pGameMap.updateFOV();
   int i =0;
 }
 
 Game::~Game(void)
 {
-  if(m_pPlayer != NULL) delete m_pPlayer;
 }
 
 
@@ -36,29 +34,20 @@ void Game::draw(void)
 
 void Game::processKeyboardKeys(unsigned char key, int x, int y) 
 {
-  std::map<int,std::vector<Tile>> tempTiles = m_pGameMap.getTiles();
   
   switch(toupper(key))
   {
     case 'A':
-      m_pPlayer->move(-15, 0);
-      if(tempTiles[m_pPlayer->getX()/15][m_pPlayer->getY()/15].isBlocked())
-        m_pPlayer->move(15, 0);
+      m_pGameMap.movePlayerUp();
       break;
     case 'D':
-      m_pPlayer->move(15, 0);
-      if(tempTiles[m_pPlayer->getX()/15][m_pPlayer->getY()/15].isBlocked())
-        m_pPlayer->move(-15, 0);
+      m_pGameMap.movePlayerDown();
       break;
     case 'S':
-      m_pPlayer->move(0, -15);
-      if(tempTiles[m_pPlayer->getX()/15][m_pPlayer->getY()/15].isBlocked())
-        m_pPlayer->move(0, 15);
+      m_pGameMap.movePlayerLeft();
       break;
     case 'W':
-      m_pPlayer->move(0, 15);
-      if(tempTiles[m_pPlayer->getX()/15][m_pPlayer->getY()/15].isBlocked())
-        m_pPlayer->move(0, -15);
+      m_pGameMap.movePlayerRight();
       break;      
   }
   m_pGameMap.updateFOV();
@@ -69,30 +58,19 @@ void Game::processKeyboardKeys(unsigned char key, int x, int y)
 
 void Game::processDirectionKeys(int key, int x, int y) 
 {
-  std::map<int,std::vector<Tile>> tempTiles = m_pGameMap.getTiles();
   switch(key)
   {
     case GLUT_KEY_LEFT:
-      m_pPlayer->move(-15, 0);
-      if(tempTiles[m_pPlayer->getX()/15+1][m_pPlayer->getY()/15+1].isBlocked())
-        m_pPlayer->move(15, 0);
+      m_pGameMap.movePlayerLeft();
       break;
     case GLUT_KEY_RIGHT:
-      m_pPlayer->move(15, 0);
-      if(tempTiles[m_pPlayer->getX()/15+1][m_pPlayer->getY()/15+1].isBlocked())
-        m_pPlayer->move(-15, 0);
-      break;
+      m_pGameMap.movePlayerRight();
       break;
     case GLUT_KEY_DOWN:
-      m_pPlayer->move(0, -15);
-      if(tempTiles[m_pPlayer->getX()/15+1][m_pPlayer->getY()/15+1].isBlocked())
-        m_pPlayer->move(0, 15);
-      break;
+      m_pGameMap.movePlayerDown();
       break;
     case GLUT_KEY_UP:
-      m_pPlayer->move(0, 15);
-      if(tempTiles[m_pPlayer->getX()/15+1][m_pPlayer->getY()/15+1].isBlocked())
-        m_pPlayer->move(0, -15);
+      m_pGameMap.movePlayerUp();
       break;      
   }
   m_pGameMap.updateFOV();

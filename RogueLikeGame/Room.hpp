@@ -3,8 +3,11 @@
 
 class Room{
   public:
+    Room();
     Room(int x, int y, int w, int h);
     ~Room();
+
+    void init(int x, int y, int w, int h);
     bool intersect(Room room);
     int getCenterX();
     int getCenterY();

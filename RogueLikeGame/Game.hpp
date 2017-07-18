@@ -11,7 +11,7 @@
 class Game
 {
   public:
-    Game (int width =800, int height = 500);
+    Game ();
     ~Game (void);
 
     void update ();
@@ -22,7 +22,6 @@ class Game
     
     void draw (void);
     
-    Player* m_pPlayer;
     GameMap m_pGameMap;
     
     int m_nScreenWidth;
