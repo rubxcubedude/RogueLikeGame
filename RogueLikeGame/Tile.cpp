@@ -1,7 +1,8 @@
 #include "Tile.hpp"
 
-Tile::Tile(bool isBlocked, bool isBlockedSight)
+Tile::Tile(bool isWall, bool isBlocked, bool isBlockedSight)
 {
+  m_bIsWall = isWall;
   m_bIsBlocked = isBlocked;
   m_bIsBlockedSight = isBlockedSight;
   m_bHasEntity = false;
@@ -34,9 +35,9 @@ void Tile::draw()
 {
   if (m_bIsBlockedSight)
     glColor4fv(BLACKF);
-  else if(m_bIsBlocked && m_bIsDark)
+  else if(m_bIsWall && m_bIsDark)
     glColor4fv(DARK_WALL);
-  else if(m_bIsBlocked )
+  else if(m_bIsWall )
     glColor4fv(BLOCKED_TILE);
   else if(m_bIsDark)
     glColor4fv(DARK_GROUND);
