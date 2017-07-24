@@ -2,9 +2,9 @@
 
 
 Player::Player():
-  Entity()
+  Fighter()
 {
-  //m_bIsVisible = true;
+  m_bIsVisible = true;
 }
 
 Player::~Player()

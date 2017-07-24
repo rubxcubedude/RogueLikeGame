@@ -20,8 +20,8 @@ Game::~Game(void)
 
 void Game::update()
 {
-  draw();
   m_pGameMap.processState();
+  draw();
 }
 
 void Game::draw(void)

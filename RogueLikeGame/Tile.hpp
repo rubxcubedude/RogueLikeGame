@@ -1,6 +1,5 @@
 #ifndef TILE_HPP
 #define TILE_HPP
-#include "Entity.hpp"
 #include "ColorConstants.hpp"
 #include "gl\freeglut.h"
 class Tile
@@ -11,8 +10,6 @@ class Tile
 
     void init(double x, double y);
     void draw (void);
-    void addEntity(Entity t);
-    void removeEntity (void);
 
     double  getPosX (void);
     double  getPosY (void);
@@ -30,9 +27,7 @@ class Tile
     bool m_bIsBlocked;
     bool m_bIsBlockedSight;
     bool m_bIsDark;
-    bool m_bHasEntity;
     bool m_bIsWall;
-    Entity m_pEntity;
 };
 
 inline double Tile::getPosX (void)
@@ -49,7 +44,7 @@ inline double Tile::getPosY (void)
 
 inline bool Tile::isBlocked (void)
 {
-  return m_bIsWall || m_bHasEntity;
+  return m_bIsWall;
 }
 
 inline void Tile::setBlocked (bool b)
@@ -67,8 +62,6 @@ inline void Tile::setIsWall (bool b)
 inline void Tile::setIsBlockedSight (bool b)
 {
   m_bIsBlockedSight = b;
-  if(!b)
-    m_pEntity.setIsVisible(true);
 }
 
 

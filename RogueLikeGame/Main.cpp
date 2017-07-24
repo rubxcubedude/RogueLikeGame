@@ -7,7 +7,7 @@ using std::string;
 #include "ColorConstants.hpp"
 
 int screen_width = 976;
-int screen_height = 751;
+int screen_height = 851;
 Game g;
 
 void processKeyboardKeys(unsigned char key, int x, int y) {
