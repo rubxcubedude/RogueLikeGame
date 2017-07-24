@@ -2,6 +2,8 @@
 #include "ColorConstants.hpp"
 #include <time.h>
 
+#include "BasicMonster.hpp"
+
 GameMap::GameMap()
 {
   m_pCurrentState = PLAYER_TURN;
@@ -13,9 +15,12 @@ GameMap::~GameMap()
 
 void GameMap::initialize(int max_rooms)
 {
+  m_nCurrentVisibleMonster = -3;
+  m_nMonsterCounter = 0;
   m_nMapWidth = 976;
   m_nMapHeight = 751;
   m_pPlayer.init(32,25,'@', WHITEF);
+  m_pPlayer.initFighter(100,55,55);
   loadTextureFromBmp("walltile.bmp");
   for(int i = 0; i<m_nMapWidth/15.0; ++i)
   {
@@ -24,7 +29,7 @@ void GameMap::initialize(int max_rooms)
       m_mTiles[i][j].init(i*15, j*15);
     }
   }
-  m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
+ 
   createDungeon(max_rooms);
 }
 
@@ -55,7 +60,7 @@ void GameMap::createDungeon(int max_rooms)
     if( width2 < (m_nMapWidth - 15) && height2 < (m_nMapHeight - 15))
     {
       bool intersect = false;
-      for(int i = 0; i< sizeof(m_vRooms); ++ i)
+      for(int i = 0; i< count; ++ i)
       {
         bool val = room2.intersect(m_vRooms[i]);
         intersect = intersect || val;
@@ -99,9 +104,11 @@ void GameMap::create_room(Room room, bool createNPC)
             m_mTiles[i][j].setIsWall(false);
             if(createNPC && monsterX == k && monsterY == l)
             {
-              Entity t;
-              t.init(i, j, 'T', YELLOWF); 
-              m_mTiles[i][j].addEntity(t);
+              BasicMonster t;
+              t.init(i, j, 'T', YELLOWF);
+              t.initFighter(100,4,4);
+              m_vMonsters[m_nMonsterCounter] = t;
+              m_nMonsterCounter++;
             }
           }
         }
@@ -173,18 +180,41 @@ void GameMap::updateFOV()
   m_mTiles[x-1][y+1].setIsDark(false);
   m_mTiles[x-1][y-1].setIsBlockedSight(false);
   m_mTiles[x-1][y-1].setIsDark(false);
+
+  for(int i = 0; i< m_nMonsterCounter; ++i)
+  {
+    bool isVisible = m_vMonsters[i].inFOV(m_pPlayer);
+    if(isVisible)
+      m_nCurrentVisibleMonster = i;
+  }
 }
 
 void GameMap::draw(void)
 {
-  drawMap();
+    drawMap();
+    drawEntities();
+}
+
+void GameMap::drawEntities(void)
+{
+  m_pPlayer.draw();
+  for(int i = 0; i <m_nMonsterCounter; ++i)
+  {
+      m_vMonsters[i].draw();
+  }
 }
 
 void GameMap::processState(void)
 {
-  int i= 0;
   if(m_pCurrentState != PLAYER_TURN)
-    m_pCurrentState = PLAYER_TURN;
+  {
+    for(int i = 0; i != m_nMonsterCounter; ++i)
+    {
+        m_vMonsters[i].takeTurn();
+    }
+  }
+  m_pCurrentState = PLAYER_TURN;
+    
 }
 
 void GameMap::drawMap(void)
@@ -243,11 +273,12 @@ void GameMap::movePlayerUp (void)
 { 
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].isBlocked())
+    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY()+1 &&
+       m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX())
+      m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
+    else if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].isBlocked())
     {
       m_pPlayer.move(0,1);
-      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].removeEntity();
     }
   }
   m_pCurrentState = NPC_TURN;
@@ -257,11 +288,12 @@ void GameMap::movePlayerDown (void)
 {
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].isBlocked())
+    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY()-1 &&
+       m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX())
+      m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
+    else if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].isBlocked())
     {
       m_pPlayer.move(0,-1);
-      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].removeEntity();
     }
   }
   m_pCurrentState = NPC_TURN;
@@ -271,11 +303,12 @@ void GameMap::movePlayerLeft (void)
 {
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(!m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].isBlocked())
+    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX()-1 &&
+       m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY())
+      m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
+    else if(!m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].isBlocked())
     {
       m_pPlayer.move(-1,0);
-      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-      m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].removeEntity();
     }
   } 
   m_pCurrentState = NPC_TURN;
@@ -285,11 +318,12 @@ void GameMap::movePlayerRight (void)
 {
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(!m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].isBlocked())
+    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX()+1 &&
+       m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY())
+      m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
+    else if(!m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].isBlocked())
     {
       m_pPlayer.move(1,0);
-      m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()].addEntity(m_pPlayer);
-      m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].removeEntity();
     }
     m_pCurrentState = NPC_TURN;
   }

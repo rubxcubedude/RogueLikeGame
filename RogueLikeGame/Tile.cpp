@@ -5,7 +5,6 @@ Tile::Tile(bool isWall, bool isBlocked, bool isBlockedSight)
   m_bIsWall = isWall;
   m_bIsBlocked = isBlocked;
   m_bIsBlockedSight = isBlockedSight;
-  m_bHasEntity = false;
 }
 
 Tile::~Tile()
@@ -19,17 +18,6 @@ void Tile::init(double x, double y)
   m_dPositionY = y;
 }
 
-
-void Tile::addEntity(Entity t)
-{
-  m_pEntity = t;
-  m_bHasEntity = true;
-}
-
-void Tile::removeEntity()
-{
-  m_bHasEntity = false;
-}
 
 void Tile::draw()
 {
@@ -50,10 +38,4 @@ void Tile::draw()
     glTexCoord2d(1.0,0.0); glVertex3f(m_dPositionX+7.5, m_dPositionY-7.5, 0.0);
     glTexCoord2d(0.0,0.0); glVertex3f(m_dPositionX-7.5, m_dPositionY-7.5, 0.0);
   glEnd();
-
-  if(m_bHasEntity)
-  {
-    glColor4fv(YELLOWF);
-    m_pEntity.draw();
-  }
 }

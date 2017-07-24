@@ -2,7 +2,7 @@
 
 Entity::Entity()
 {
-  m_bIsVisible = true;
+  m_bIsVisible = false;
 }
 
 Entity::~Entity()
@@ -21,8 +21,7 @@ void Entity::init(int x, int y, char c, const float color[4])
   m_dPosition_x = x;
   m_dPosition_y = y;
   m_cDisplay_char = c;
-	memcpy(m_afDisplay_color, color, sizeof(m_afDisplay_color));
-  m_bIsVisible = false;
+  memcpy(m_afDisplay_color, color, sizeof(m_afDisplay_color));
 }
 
 
