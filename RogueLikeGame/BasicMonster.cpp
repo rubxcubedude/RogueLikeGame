@@ -46,5 +46,5 @@ bool BasicMonster::inFOV(Fighter &f)
     m_fEnemy  = f;
   }
 
-  return m_bIsVisible;
+  return m_bIsVisible && !m_bIsDead;
 }

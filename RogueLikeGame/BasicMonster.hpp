@@ -11,8 +11,6 @@ class BasicMonster: public Fighter
     void takeTurn (void);
 
   private:
-    int m_nEnemyPosX;
-    int m_nEnemyPosY;
     bool m_bJustAppeared;
     Fighter m_fEnemy;
 
