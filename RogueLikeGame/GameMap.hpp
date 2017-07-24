@@ -6,7 +6,7 @@
 #include "Player.hpp"
 #include "BasicMonster.hpp"
 
-enum GameState{PLAYER_TURN, NPC_TURN};
+enum GameState{PLAYER_TURN, NPC_TURN, PLAYER_DEAD};
 
 
 class GameMap
@@ -36,6 +36,7 @@ class GameMap
     void drawMap (void);
     void drawEntities (void);
     void drawBattle (void);
+    void drawUI (void);
     void loadTextureFromBmp (const char* szImageFileName);
     GLuint m_uiTextureId;
     std::string  m_pucTextureArray;

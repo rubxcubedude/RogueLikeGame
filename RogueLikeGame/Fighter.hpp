@@ -11,6 +11,7 @@ class Fighter: public Entity
     void takeDmg(int amount);
     void attack(Fighter &f);
     int getDefense(void);
+    int getHP(void);
     bool isAlive (void);
   protected:
     bool m_bIsDead;
@@ -26,6 +27,11 @@ class Fighter: public Entity
 inline int Fighter::getDefense(void)
 {
   return m_nDefense;
+}
+
+inline int Fighter::getHP(void)
+{
+  return m_nCurrentHp;
 }
 
 inline bool Fighter::isAlive(void)

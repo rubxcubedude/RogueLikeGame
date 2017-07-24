@@ -193,6 +193,7 @@ void GameMap::draw(void)
 {
     drawMap();
     drawEntities();
+    drawUI();
 }
 
 void GameMap::drawEntities(void)
@@ -206,14 +207,16 @@ void GameMap::drawEntities(void)
 
 void GameMap::processState(void)
 {
-  if(m_pCurrentState != PLAYER_TURN)
+  
+  if(m_pCurrentState != PLAYER_TURN && m_pCurrentState != PLAYER_DEAD)
   {
     for(int i = 0; i != m_nMonsterCounter; ++i)
     {
         m_vMonsters[i].takeTurn();
     }
   }
-  m_pCurrentState = PLAYER_TURN;
+  if(m_pCurrentState != PLAYER_DEAD)
+    m_pCurrentState = PLAYER_TURN;
     
 }
 
@@ -225,6 +228,28 @@ void GameMap::drawMap(void)
     {
       m_mTiles[i][j].draw();
     }
+  }
+}
+
+void GameMap::drawUI(void)
+{
+  glColor4fv(WHITEF);
+  
+  glBegin( GL_LINE_LOOP ); 
+    glVertex3f(0, 750, 0.0);
+    glVertex3f(m_nMapWidth, 750, 0.0);
+     glVertex3f(m_nMapWidth, 850, 0.0);
+     glVertex3f(0, 850, 0.0);
+  glEnd();
+  glRasterPos2d(200,800);
+  glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, 'H');
+  glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, 'P');
+  glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, ' ');
+
+  std::string currentHp = std::to_string((long double)m_pPlayer.getHP());
+  for(std::string::iterator it = currentHp.begin(); it != currentHp.end(); ++it)
+  {    
+  glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *it);
   }
 }
 
