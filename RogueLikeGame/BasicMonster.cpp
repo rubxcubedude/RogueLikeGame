@@ -18,15 +18,15 @@ void BasicMonster::takeTurn()
   {
     if(m_bJustAppeared)
       m_bJustAppeared = false; //give the player 1 turn to react
-    else if(m_fEnemy.getX() == m_dPosition_x-1 && m_dPosition_y == m_fEnemy.getY()+1 ||
-            m_fEnemy.getX() == m_dPosition_x+1 && m_dPosition_y == m_fEnemy.getY()+1 ||
-            m_fEnemy.getX() == m_dPosition_x-1 && m_dPosition_y == m_fEnemy.getY()-1 ||
-            m_fEnemy.getX() == m_dPosition_x+1 && m_dPosition_y == m_fEnemy.getY()-1)
-      attack(m_fEnemy);/*
+    else if(m_fEnemy.getX() == m_dPosition_x && m_dPosition_y == m_fEnemy.getY()+1 ||
+            m_fEnemy.getX() == m_dPosition_x && m_dPosition_y == m_fEnemy.getY()-1 ||
+            m_fEnemy.getX() == m_dPosition_x-1 && m_dPosition_y == m_fEnemy.getY() ||
+            m_fEnemy.getX() == m_dPosition_x+1 && m_dPosition_y == m_fEnemy.getY())
+      attack(m_fEnemy);
     else if(rand()%2 ==1)
-      move(m_nEnemyPosX-m_dPosition_x, 0);
+      move(m_fEnemy.getX()-m_dPosition_x, 0);
     else
-      move(0, m_nEnemyPosY-m_dPosition_y);*/
+      move(0, m_fEnemy.getY()-m_dPosition_y);
   }
 }
 
