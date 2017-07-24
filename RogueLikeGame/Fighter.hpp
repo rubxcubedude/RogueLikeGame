@@ -7,6 +7,8 @@ class Fighter: public Entity
     Fighter();
     ~Fighter();
 
+    void draw (void);
+
     void initFighter(int maxHp, int defense, int power);
     void takeDmg(int amount);
     void attack(Fighter &f);

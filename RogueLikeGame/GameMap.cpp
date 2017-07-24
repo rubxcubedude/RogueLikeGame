@@ -298,7 +298,7 @@ void GameMap::movePlayerUp (void)
 { 
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY()+1 &&
+    if(m_nCurrentVisibleMonster >= 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY()+1 &&
        m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX())
       m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
     else if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()+1].isBlocked())
@@ -313,7 +313,7 @@ void GameMap::movePlayerDown (void)
 {
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY()-1 &&
+    if(m_nCurrentVisibleMonster >= 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY()-1 &&
        m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX())
       m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
     else if(!m_mTiles[m_pPlayer.getX()][m_pPlayer.getY()-1].isBlocked())
@@ -328,7 +328,7 @@ void GameMap::movePlayerLeft (void)
 {
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX()-1 &&
+    if(m_nCurrentVisibleMonster >= 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX()-1 &&
        m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY())
       m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
     else if(!m_mTiles[m_pPlayer.getX()-1][m_pPlayer.getY()].isBlocked())
@@ -343,7 +343,7 @@ void GameMap::movePlayerRight (void)
 {
   if(m_pCurrentState == PLAYER_TURN)
   {
-    if(m_nCurrentVisibleMonster > 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX()+1 &&
+    if(m_nCurrentVisibleMonster >= 0 && m_vMonsters[m_nCurrentVisibleMonster].isAlive() && m_vMonsters[m_nCurrentVisibleMonster].getX() == m_pPlayer.getX()+1 &&
        m_vMonsters[m_nCurrentVisibleMonster].getY() == m_pPlayer.getY())
       m_pPlayer.attack(m_vMonsters[m_nCurrentVisibleMonster]);
     else if(!m_mTiles[m_pPlayer.getX()+1][m_pPlayer.getY()].isBlocked())

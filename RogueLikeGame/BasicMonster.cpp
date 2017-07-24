@@ -33,8 +33,14 @@ void BasicMonster::takeTurn()
 
 bool BasicMonster::inFOV(Fighter &f)
 {
-  if((m_dPosition_x == f.getX()+1 || m_dPosition_x == f.getX()-1) &&
-     (m_dPosition_y == f.getY()+1 || m_dPosition_y == f.getY()-1))
+  if(f.getX() == m_dPosition_x-1 && m_dPosition_y == f.getY()+1 ||
+     f.getX() == m_dPosition_x+1 && m_dPosition_y == f.getY()+1 ||
+     f.getX() == m_dPosition_x-1 && m_dPosition_y == f.getY()-1 ||
+     f.getX() == m_dPosition_x+1 && m_dPosition_y == f.getY()-1 ||
+     f.getX() == m_dPosition_x && m_dPosition_y == f.getY()+1 ||
+     f.getX() == m_dPosition_x && m_dPosition_y == f.getY()-1 ||
+     f.getX() == m_dPosition_x-1 && m_dPosition_y == f.getY() ||
+     f.getX() == m_dPosition_x+1 && m_dPosition_y == f.getY())
   {
     m_bIsVisible = true;
     m_fEnemy  = f;
