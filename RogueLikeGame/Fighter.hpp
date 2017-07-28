@@ -14,6 +14,7 @@ class Fighter: public Entity
     void attack(Fighter &f);
     int getDefense(void);
     int getHP(void);
+    int getMaxHp(void);
     bool isAlive (void);
   protected:
     bool m_bIsDead;
@@ -34,6 +35,11 @@ inline int Fighter::getDefense(void)
 inline int Fighter::getHP(void)
 {
   return m_nCurrentHp;
+}
+
+inline int Fighter::getMaxHp(void)
+{
+  return m_nMaxHp;
 }
 
 inline bool Fighter::isAlive(void)

@@ -164,7 +164,91 @@ void GameMap::updateFOV()
   //now light up area around player
   m_mTiles[x][y].setIsDark(false);
   m_mTiles[x][y].setIsBlockedSight(false);
-  m_mTiles[x+1][y].setIsDark(false);
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x+i][y].setIsDark(false);
+    m_mTiles[x+i][y].setIsBlockedSight(false);
+      if(m_mTiles[x+i][y].isBlocked())
+        break;
+    if(i ==2)
+    {
+      m_mTiles[x+i][y+1].setIsDark(false);
+      m_mTiles[x+i][y+1].setIsBlockedSight(false);
+      m_mTiles[x+i][y-1].setIsDark(false);
+      m_mTiles[x+i][y-1].setIsBlockedSight(false);
+    }
+  }
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x-i][y].setIsDark(false);
+    m_mTiles[x-i][y].setIsBlockedSight(false);
+      if(m_mTiles[x-i][y].isBlocked())
+        break;
+    if(i ==2)
+    {
+      m_mTiles[x-i][y-1].setIsDark(false);
+      m_mTiles[x-i][y-1].setIsBlockedSight(false);
+      m_mTiles[x-i][y+1].setIsDark(false);
+      m_mTiles[x-i][y+1].setIsBlockedSight(false);
+    }
+  }
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x][y-i].setIsDark(false);
+    m_mTiles[x][y-i].setIsBlockedSight(false);
+      if(m_mTiles[x][y-i].isBlocked())
+        break;
+    if(i ==2)
+    {
+      m_mTiles[x+1][y-i].setIsDark(false);
+      m_mTiles[x+1][y-i].setIsBlockedSight(false);
+      m_mTiles[x-1][y-i].setIsDark(false);
+      m_mTiles[x-1][y-i].setIsBlockedSight(false);
+    }
+  }
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x][y+i].setIsDark(false);
+    m_mTiles[x][y+i].setIsBlockedSight(false);
+   if(m_mTiles[x][y+i].isBlocked())
+        break;
+   if(i ==2)
+   {
+     m_mTiles[x+1][y+i].setIsDark(false);
+     m_mTiles[x+1][y+i].setIsBlockedSight(false);
+      m_mTiles[x-1][y+i].setIsDark(false);
+     m_mTiles[x-1][y+i].setIsBlockedSight(false);
+    }
+  }
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x+i][y+i].setIsDark(false);
+    m_mTiles[x+i][y+i].setIsBlockedSight(false);
+      if(m_mTiles[x+i][y+i].isBlocked())
+        break;
+  }
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x-i][y+i].setIsDark(false);
+    m_mTiles[x-i][y+i].setIsBlockedSight(false);
+      if(m_mTiles[x-i][y+i].isBlocked())
+        break;
+  }
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x+i][y-i].setIsDark(false);
+    m_mTiles[x+i][y-i].setIsBlockedSight(false);
+      if(m_mTiles[x+i][y-i].isBlocked())
+        break;
+  }
+  for(int i = 1; i< 3; ++i)
+  {
+    m_mTiles[x-i][y-i].setIsDark(false);
+    m_mTiles[x-i][y-i].setIsBlockedSight(false);
+      if(m_mTiles[x-i][y-i].isBlocked())
+        break;
+  }
+ /* m_mTiles[x+1][y].setIsDark(false);
   m_mTiles[x+1][y].setIsBlockedSight(false);
   m_mTiles[x-1][y].setIsDark(false);
   m_mTiles[x-1][y].setIsBlockedSight(false);
@@ -179,7 +263,7 @@ void GameMap::updateFOV()
   m_mTiles[x-1][y+1].setIsBlockedSight(false);
   m_mTiles[x-1][y+1].setIsDark(false);
   m_mTiles[x-1][y-1].setIsBlockedSight(false);
-  m_mTiles[x-1][y-1].setIsDark(false);
+  m_mTiles[x-1][y-1].setIsDark(false);*/
 
   for(int i = 0; i< m_nMonsterCounter; ++i)
   {
@@ -241,13 +325,24 @@ void GameMap::drawUI(void)
      glVertex3f(m_nMapWidth, 850, 0.0);
      glVertex3f(0, 850, 0.0);
   glEnd();
-  glRasterPos2d(200,800);
-  glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, 'H');
-  glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, 'P');
-  glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, ' ');
+  glBegin(GL_LINE_LOOP);
+    glVertex3f(m_nMapWidth-100, 750, 0.0);
+      glVertex3f(m_nMapWidth, 750, 0.0);
+      glVertex3f(m_nMapWidth, 850, 0.0);
+    glVertex3f(m_nMapWidth-100, 850, 0.0);
+  glEnd();
 
-  std::string currentHp = std::to_string((long double)m_pPlayer.getHP());
-  for(std::string::iterator it = currentHp.begin(); it != currentHp.end(); ++it)
+  std::string currentHp = "HP " + std::to_string((long double)m_pPlayer.getHP())+" / "+std::to_string((long double)m_pPlayer.getMaxHp());
+  drawText(m_nMapWidth-95,830, currentHp);
+  std::string defense = "DEF " + std::to_string((long double)m_pPlayer.getDefense());
+  drawText(m_nMapWidth-95,815, defense);
+}
+
+
+void GameMap::drawText(int x, int y, std::string input)
+{
+  glRasterPos2d(x,y);
+  for(std::string::iterator it = input.begin(); it != input.end(); ++it)
   {    
   glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *it);
   }

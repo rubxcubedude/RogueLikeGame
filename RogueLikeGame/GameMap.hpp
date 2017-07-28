@@ -37,6 +37,7 @@ class GameMap
     void drawEntities (void);
     void drawBattle (void);
     void drawUI (void);
+    void drawText(int x, int y, std::string input);
     void loadTextureFromBmp (const char* szImageFileName);
     GLuint m_uiTextureId;
     std::string  m_pucTextureArray;
