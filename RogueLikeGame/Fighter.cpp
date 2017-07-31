@@ -1,5 +1,5 @@
 #include "Fighter.hpp"
-
+#include "Listener.hpp"
 
 Fighter::Fighter():
   Entity()
@@ -25,6 +25,8 @@ void Fighter::takeDmg(int amount)
   m_nCurrentHp = m_nCurrentHp - amount;
   if(m_nCurrentHp <=0)
   {
+    std::string szTemp = "The " + m_strName +" Died";
+    Listener::Instance().report(szTemp);
     m_bIsDead = true;
     m_bIsVisible = false;
   }
@@ -32,9 +34,14 @@ void Fighter::takeDmg(int amount)
 
 void Fighter::attack(Fighter &f)
 {
+
   int damage = m_nPower - f.getDefense();
   if(damage >0)
+  {
+    std::string szTemp = m_strName +" attacked " + f.getName()+" for " + std::to_string((long double)damage) + " damage";
+    Listener::Instance().report(szTemp);
     f.takeDmg(damage);
+  }
 }
 
 void Fighter::draw()

@@ -6,6 +6,7 @@ BasicMonster::BasicMonster():
 {
   m_bIsVisible =false;
   m_bJustAppeared = true;
+  m_strName = "Orc";
 }
 
 BasicMonster::~BasicMonster()

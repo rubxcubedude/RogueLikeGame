@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "BasicMonster.hpp"
+#include "Listener.hpp"
 
 GameMap::GameMap()
 {
@@ -336,6 +337,14 @@ void GameMap::drawUI(void)
   drawText(m_nMapWidth-95,830, currentHp);
   std::string defense = "DEF " + std::to_string((long double)m_pPlayer.getDefense());
   drawText(m_nMapWidth-95,815, defense);
+
+  std::list<std::string> temp = Listener::Instance().getMessages();
+  int i =0;
+  for(std::list<std::string>::iterator it = temp.begin(); it != temp.end(); it++)
+  {
+    drawText(95,830-(i*15), *it);
+    i++;
+  }
 }
 
 

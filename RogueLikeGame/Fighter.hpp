@@ -16,20 +16,27 @@ class Fighter: public Entity
     int getHP(void);
     int getMaxHp(void);
     bool isAlive (void);
+    std::string getName(void);
   protected:
     bool m_bIsDead;
-
+    std::string m_strName;
   private:
     int m_nMaxHp;
     int m_nCurrentHp;
     int m_nDefense;
     int m_nPower;
     
+    
 };
 
 inline int Fighter::getDefense(void)
 {
   return m_nDefense;
+}
+
+inline std::string Fighter::getName(void)
+{
+  return m_strName;
 }
 
 inline int Fighter::getHP(void)
